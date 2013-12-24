@@ -1,0 +1,134 @@
+<?xml version="1.1"?>
+<config>
+	<global>
+		<models>
+            <slideshow>
+                <class>Sm_Slideshow_Model</class>
+            </slideshow>
+        </models>
+		<blocks>
+            <slideshow>
+                <class>Sm_Slideshow_Block</class>
+            </slideshow>            		
+        </blocks>				
+		<helpers>
+            <slideshow>
+                <class>Sm_Slideshow_Helper</class>
+            </slideshow>
+        </helpers>
+        <resources>
+        	<slideshow_setup>
+        		<setup>
+        			<module>Sm_Slideshow</module>
+        		</setup>
+        	</slideshow_setup>
+        </resources>
+	</global>
+	<frontend>
+        <routers>
+			<slideshow>
+                <use>standard</use>
+                <args>
+                    <module>Sm_Slideshow</module>
+                    <frontName>slideshow</frontName>
+                </args>
+            </slideshow>
+        </routers>
+		<layout>
+            <updates>
+                <slideshow module="Sm_Slideshow">
+					<file>sm/slideshow.xml</file>
+                </slideshow>
+            </updates>
+        </layout>
+        <translate>
+      		<modules>
+          		<Sm_Slideshow>
+                     <files>
+                          <default>Sm_Slideshow.csv</default>
+                     </files>
+                </Sm_Slideshow>
+            </modules>
+        </translate>
+	</frontend>
+	<adminhtml>
+        <translate>
+      		<modules>
+          		<Sm_Slideshow>
+                     <files>
+                          <default>Sm_Slideshow.csv</default>
+                     </files>
+                </Sm_Slideshow>
+            </modules>
+        </translate>
+		<acl>
+			<resources>
+				<admin>
+					<children>
+						<system>
+							<children>
+								<config>
+									<children>										
+										<slideshow_cfg translate="title" module="slideshow">
+											<title>SM Slideshow Settings</title>
+										</slideshow_cfg>
+									</children>
+								</config>
+							</children>
+						</system>
+					</children>
+				</admin>
+			</resources>
+		</acl>
+	</adminhtml>
+	<default>
+        <slideshow_cfg>
+        	<general>
+                <isenabled>1</isenabled>
+                <title>SM Slideshow</title>
+            </general>
+			<module_setting>
+				<product_links_target>_self</product_links_target>
+				<theme>theme1</theme>
+			</module_setting>			
+            <source_setting>            
+            	<product_category></product_category>
+            	<product_order_by></product_order_by>
+            	<product_order_dir></product_order_dir>
+            	<product_limitation>7</product_limitation>
+            </source_setting>
+				
+			<product_display_setting>
+				<product_title_disp>1</product_title_disp>
+				<product_title_max_characters>20</product_title_max_characters>
+				
+				<product_image_width>500</product_image_width>
+				<product_image_height>400</product_image_height>
+				
+				<product_description_disp>1</product_description_disp>
+				<product_description_max_characters>150</product_description_max_characters>
+                <item_description_striptags>1</item_description_striptags>
+                <item_description_keeptags></item_description_keeptags>
+				
+				<product_details_page_link_disp>1</product_details_page_link_disp>
+				<product_details_page_link_text>Details</product_details_page_link_text>
+				<product_price_disp>1</product_price_disp>
+				<product_reviews_count>1</product_reviews_count>				
+			</product_display_setting>
+			
+            <effect_setting>
+            	<start>1</start>
+            	<pause_hover>1</pause_hover>
+            	<play>1</play>
+				<interval>5000</interval>
+				<effect>slide</effect>
+            </effect_setting>
+			
+            <advanced>
+            	<include_jquery>1</include_jquery>
+            	<pretext></pretext>
+            	<posttext></posttext>
+            </advanced>
+        </slideshow_cfg>
+    </default>
+</config>

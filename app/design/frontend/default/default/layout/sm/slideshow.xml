@@ -1,0 +1,17 @@
+<?xml version="1.1"?>   
+<layout version="1.1">
+	<default>
+        <reference name="head">
+        	<action method="addCss"><stylesheet>sm/slideshow/css/slideshow.css</stylesheet></action>
+        </reference>
+    </default>
+	<slideshow_index_index>
+		<reference name="content">
+			<block type="slideshow/list" name="slideshow.list.theme1">
+				<action method="setConfig">					
+				</action>
+			</block>
+		</reference>
+	</slideshow_index_index>	
+</layout>   
+	

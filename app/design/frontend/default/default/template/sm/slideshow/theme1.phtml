@@ -1,0 +1,137 @@
+<?php
+/*------------------------------------------------------------------------
+ # SM Slideshow - Version 1.1
+ # Copyright (c) 2013 YouTech Company. All Rights Reserved.
+ # @license - Copyrighted Commercial Software
+ # Author: YouTech Company
+ # Websites: http://www.magentech.com
+-------------------------------------------------------------------------*/
+
+	$options = $this->getConfigObject();
+	$smarthelper= Mage::helper('slideshow/utils');
+	$list = $this->getProducts();	
+	$instance	= rand().time();	
+	if( $options->pause_hover ){
+		$hover ="hover";
+	}else{
+		$hover="";
+	}
+	
+if(!empty($list)) {
+	echo $this->getScriptTags();		
+	$start = $options->start;
+	if ($start <= 0 || ($start > count($list))){
+		$start = 1;
+	}
+	$start_item = &$list[$start - 1];
+	$play = $options->play;
+	if (!$play){
+		$interval = 0;
+	} else {
+		$interval = $options->interval;
+	}	
+if(!empty($options->pretext)) { ?>
+<div class="pre-text">
+	<?php echo $options->pretext; ?>
+</div>
+<?php } ?>
+<div class="slideshow theme1 <?php if( $options->effect == 'slide' ){ echo $options->effect;}?>" id="slideshow_<?php echo $instance; ?>" data-interval="<?php echo $interval; ?>" data-pause="<?php echo $hover; ?>">
+	<div class="slideshow-inner">
+		<?php $j = 0 ;
+		foreach($list as $item) {
+			$j++;?>
+		<div class="sl-item <?php if($j == $start){echo "active";}?> item" data-href="<?php echo $item['link']; ?>" data-caption="<?php echo $item['title']; ?>">
+			<div class="sl-item-image">
+				<a href="<?php echo $item['link']; ?>" <?php echo $smarthelper->getTargetAttr($options->product_links_target);?> onclick="javascript: return true";>
+		    		<img src="<?php echo $item['image'];?>" alt="<?php echo $item['title']; ?>" title="<?php echo $item['title']; ?>" />	    				
+				</a>
+			</div>
+			<?php if( $options->product_description_disp == 1 && !empty($item['desc']) || $options->product_price_disp || $options->product_reviews_count ){ ?>
+			<div class="sl-item-info">
+				<div class="transparency"></div>
+				<div class="sl-item-content" >
+					<?php if( $options->product_description_disp == 1 ) { ?>
+						<div class="sl-item-description">
+							<?php echo $item['desc']; ?>
+						</div>
+					<?php } ?>
+					<?php if($options->product_reviews_count == 1){ ?>
+						<div class="item-review">
+							<?php echo $item['review']; ?>
+						</div>
+					<?php }					 
+					if( (int)$options->product_price_disp ){ ?>
+						<div class="item-price">
+							<div class="sale-price">
+							<?php echo $item['price'];?>
+							</div>
+						</div>
+					<?php }?>						
+					<?php if( $options->product_details_page_link_disp == 1 ) { ?>
+					<div class="sl-item-readmore">
+						<a href="<?php echo $item['link']; ?>" <?php echo $smarthelper->getTargetAttr($options->product_links_target);?> onclick="javascript: return true";>
+							<?php echo $options->product_details_page_link_text; ?>
+						</a>
+					</div>
+					<?php } ?>
+				</div>
+			</div>
+			<?php }?>
+		</div><!--End sj-item-->
+		<?php } ?>
+	</div>
+		<div class="sl-control">
+			<div class="transparency"></div>
+			<?php if( $options->product_title_disp == 1 ) { ?>
+				<div class="sl-captions">
+					<a class="slide-caption" data-caption="<?php echo $start_item['title']; ?>" href="<?php echo $start_item['link']; ?>" <?php echo $smarthelper->getTargetAttr($options->product_links_target);?> onclick="javascript: return true";></a>
+				</div>
+			<?php } ?>
+			<ul class="pag-list">
+				<?php for( $i=0; $i<count($list); $i++ ): ?>
+					<li class="pag-item <?php if( $i == $start-1 ){echo ' sel';}?>" href="<?php echo '#slideshow_'.$instance;?>" data-jslide="<?php echo $i;?>"></li>
+				<?php endfor; ?>
+			</ul>
+		</div>
+	
+</div>
+<?php if(!empty($options->posttext)) {  ?>
+<div class="post-text">
+	<?php echo $options->posttext; ?>
+</div>
+<?php }} else {?>
+	<p><?php echo $this->__('Has no item to show!'); ?></p>
+<?php }?>
+
+<script>
+//<![CDATA[    					
+	jQuery(function($){
+		$('#slideshow_<?php echo $instance; ?>').each(function(){
+			var $this = $(this), options = options = !$this.data('modal') && $.extend({}, $this.data());
+			$this.jcarousel(options);
+			$this.bind('jslide', function(e){
+				var index = $(this).find(e.relatedTarget).index();
+
+				// process for nav
+				$('[data-jslide]').each(function(){
+					var $nav = $(this), $navData = $nav.data(), href, $target = $($nav.attr('data-target') || (href = $nav.attr('href')) && href.replace(/.*(?=#[^\s]+$)/, ''));
+					if ( !$target.is($this) ) return;
+					if (typeof $navData.jslide == 'number' && $navData.jslide==index){
+						$nav.addClass('sel');
+					} else {
+						$nav.removeClass('sel');
+					}
+				});
+
+				// process change title
+				var itemd = $(this).find(e.relatedTarget).data();
+				$this.find('.slide-caption').attr({
+					'data-caption': itemd.caption,
+					'href': itemd.href
+				});
+			});
+		});
+		return ;
+	});
+//]]>	
+</script>

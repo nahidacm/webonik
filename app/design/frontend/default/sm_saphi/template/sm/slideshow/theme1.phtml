@@ -1,0 +1,160 @@
+<?php
+/*------------------------------------------------------------------------
+ # SM Slideshow - Version 1.1
+ # Copyright (c) 2013 YouTech Company. All Rights Reserved.
+ # @license - Copyrighted Commercial Software
+ # Author: YouTech Company
+ # Websites: http://www.magentech.com
+-------------------------------------------------------------------------*/
+
+	$options = $this->getConfigObject();
+	$smarthelper= Mage::helper('slideshow/utils');
+	$list = $this->getProducts();
+	$instance	= rand().time();	
+	if( $options->pause_hover ){
+		$hover ="hover";
+	}else{
+		$hover="";
+	}
+	
+if(!empty($list)) {
+	echo $this->getScriptTags();		
+	$start = $options->start;
+	if ($start <= 0 || ($start > count($list))){
+		$start = 1;
+	}
+	$start_item = &$list[$start - 1];
+	$play = $options->play;
+	if (!$play){
+		$interval = 0;
+	} else {
+		$interval = $options->interval;
+	}	
+if(!empty($options->pretext)) { ?>
+<div class="pre-text">
+	<?php echo $options->pretext; ?>
+</div>
+<?php } ?>
+<div class="slideshow theme1 <?php if( $options->effect == 'slide' ){ echo $options->effect;}?>" id="slideshow_<?php echo $instance; ?>" data-interval="<?php echo $interval; ?>" data-pause="<?php echo $hover; ?>">
+	<div class="slideshow-inner">
+		<?php $j = 0 ;
+		foreach($list as $item) {
+			$j++;
+			$specialprice = Mage::getModel('catalog/product')->load($item['id'])->getSpecialPrice(); 
+			$price = Mage::getModel('catalog/product')->load($item['id'])->getPrice();
+
+			?>
+		<div class="sl-item <?php if($j == $start){echo "active";}?> item" data-href="<?php echo $item['link']; ?>" data-caption="<?php echo $item['title']; ?>">
+			<div class="sl-item-image">
+				<a href="<?php echo $item['link']; ?>" <?php echo $smarthelper->getTargetAttr($options->product_links_target);?> onclick="javascript: return true">
+				<?php	
+					global $var_yttheme;				
+					$imageoverride = str_replace($var_yttheme->baseurl().'/', '', $var_yttheme->skinurl()).'/images/sm-slideshow/'.strtolower(str_replace(' ', '-', $item['title'])).'.png';					
+					if( file_exists($imageoverride) ){
+						?>
+						<img src="<?php echo $var_yttheme->baseurl().'/'.$imageoverride; ?>" alt="<?php echo $item['title']?>"/>
+						<?php
+					}else{
+						?>
+						<img src="<?php echo $item['image']?>" alt="<?php echo $item['title']?>" title="<?php echo $item['title']; ?>"/>
+						<?php
+					}?>		
+										
+				</a>
+			</div>
+			<?php if( $options->product_description_disp == 1 && !empty($item['desc']) || $options->product_price_disp || $options->product_reviews_count ){ ?>
+			<div class="sl-item-info">
+				<div class="transparency"></div>
+				<div class="sl-item-content" >
+					<?php if($options->product_title_disp == 1) { ?>
+						<div class="sl-item-title">							
+							<a href="<?php echo $item['link'];?>" <?php echo $smarthelper->getTargetAttr($options->product_links_target);?> onclick="javascript: return true">
+								<?php echo $item['title']; ?>
+							</a>						
+						</div>
+					<?php } ?>				
+					<?php if( $options->product_description_disp == 1 ) { ?>
+						<div class="sl-item-description">
+							<?php echo $item['desc']; ?>
+						</div>
+					<?php } ?>
+
+                    <a title="<?php echo $this->__("Shop Now");?>" href="<?php echo $item['link'];?>" <?php echo $smarthelper->getTargetAttr($options->product_links_target);?> onclick="javascript: return true">
+                    <div class="viewdetail">
+                    	<span><?php echo $this->__("Shop Now");?></span>
+                        <i></i>                                                
+                    </div>
+                    </a>
+				</div>				
+				<?php if ($specialprice){
+					//echo "<span class='saleoff-grid'>sale off</span>"; ?>
+					<div class='sale-item'><span><?php
+						//print_r($specialprice);
+						//print_r($_product->getPrice());
+						$saleof= abs(($specialprice/($price))*100-100);
+						print_r(floor($saleof));
+					?></span></div>
+                <?php }?>
+			</div>
+			<?php }?>
+			
+			<div class="sl-control">
+				<ul class="pag-list">
+					<?php for( $i=0; $i<count($list); $i++ ): ?>
+						<li>
+							<a class="pag-item <?php if( $i == $start-1 ){echo ' sel';}?>" href="<?php echo '#slideshow_'.$instance;?>" data-jslide="<?php echo $i;?>"></a>					
+						</li>
+					<?php endfor; ?>
+				</ul>
+			</div>			
+		</div><!--End sj-item-->
+		<?php } ?>
+	</div>
+	<ul class="control-next-priew">
+		<li class="pag-prev" href="<?php echo '#slideshow_'.$instance;?>" data-jslide="prev"><span></span></li>				
+		<li class="pag-next" href="<?php echo '#slideshow_'.$instance;?>" data-jslide="next"><span></span></li>
+			<li class="bg-priew "></li> 
+		<li class="bg-next "></li> 
+	</ul>	
+	
+</div>
+<?php if(!empty($options->posttext)) {  ?>
+<div class="post-text">
+	<?php echo $options->posttext; ?>
+</div>
+<?php }} else {?>
+	<p><?php echo $this->__('Has no item to show!'); ?></p>
+<?php }?>
+
+<script>
+//<![CDATA[    					
+	jQuery(function($){
+		$('#slideshow_<?php echo $instance; ?>').each(function(){
+			var $this = $(this), options = options = !$this.data('modal') && $.extend({}, $this.data());
+			$this.jcarousel(options);
+			$this.bind('jslide', function(e){
+				var index = $(this).find(e.relatedTarget).index();
+
+				// process for nav
+				$('[data-jslide]').each(function(){
+					var $nav = $(this), $navData = $nav.data(), href, $target = $($nav.attr('data-target') || (href = $nav.attr('href')) && href.replace(/.*(?=#[^\s]+$)/, ''));
+					if ( !$target.is($this) ) return;
+					if (typeof $navData.jslide == 'number' && $navData.jslide==index){
+						$nav.addClass('sel');
+					} else {
+						$nav.removeClass('sel');
+					}
+				});
+
+				// process change title
+				var itemd = $(this).find(e.relatedTarget).data();
+				$this.find('.slide-caption').attr({
+					'data-caption': itemd.caption,
+					'href': itemd.href
+				});
+			});
+		});
+		return ;
+	});
+//]]>	
+</script>
