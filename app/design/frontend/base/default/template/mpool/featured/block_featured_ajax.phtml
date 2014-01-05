@@ -1,0 +1,34 @@
+<?php
+/**
+ * @category     Mpool
+ * @package     Mpool Featured Products
+ * @author      Mahmudur Rahman, Mpool Team <nahidacm@gmail.com>
+ */
+?>
+<?php
+$_helper = $this->helper('catalog/output');
+$_productCollection = $this->getProductCollection();
+$_collectionSize = $_productCollection->getSize();
+
+foreach ($_productCollection as $_product):
+    ?>
+    <div class="product">
+        <div class="product-image-container" title="View product detail">
+            <a href="<?php echo $_product->getProductUrl() ?>">
+                <img src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(166, 183); ?>" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" />
+                <span><?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?></span>
+            </a>
+        </div>
+        <div class="product-price-container">
+            <span class="price">
+    <?php echo $this->getPriceHtml($_product, true) ?>
+            </span>
+            <input type="text" value="1" class="quantity" />
+            <?php if ($_product->isSaleable()): ?>
+                <button type="button" title="<?php echo $this->__('Add to Cart') ?>" class="button btn-cart" onclick="setLocation('<?php echo $this->getAddToCartUrl($_product) ?>')"><span><span><?php echo $this->__('Add to Cart') ?></span></span></button>
+                    <?php else: ?>
+                <p class="availability out-of-stock"><span><?php echo $this->__('Out of stock') ?></span></p>
+    <?php endif; ?>
+        </div>
+    </div>
+<?php endforeach ?>

@@ -1,0 +1,142 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js" lang="en">
+    <!--<![endif]-->
+    <head>
+        <?php echo $this->getChildHtml('head') ?>
+
+    </head>
+    <body<?php echo $this->getBodyClass() ? ' class="' . $this->getBodyClass() . '"' : '' ?>>
+        <?php echo $this->getChildHtml('after_body_start') ?>
+        <div class="bg-popup-overlay"></div>
+
+        <div class="wrapper">
+            <?php echo $this->getChildHtml('global_notices') ?>
+            <?php echo $this->getChildHtml('header') ?>
+
+            <section role="main" class="content_wrapper">
+                <div class="center">
+                    <?php echo $this->getChildHtml('global_messages') ?>
+                    <div class="page-content">
+                        <div class="product-nav-container">
+                            <a class="close-popup" href="javascript:void(0);">X</a>
+                            <div class="product-nav scrollable">
+                                <fieldset>
+                                    <legend>Beverages</legend>
+                                    <ul>
+                                        <li><a href="#">Coffee, Coffee, Coffee</a></li>
+                                        <li><a href="#">Tea</a></li>
+                                        <li><a href="#">Apple Juice</a></li>
+                                        <li><a href="#">Mango Juice</a></li>
+                                        <li><a href="#">Orange Juice</a></li>
+                                        <li><a href="#">Ice Cream</a></li>
+                                    </ul>
+                                </fieldset>
+                                <fieldset data-draft-repeat="3">
+                                    <legend>Cooking</legend>
+                                    <ul>
+                                        <li><a href="#">Rice</a></li>
+                                        <li><a href="#">Lentil</a></li>
+                                        <li><a href="#">Bay Leaves</a></li>
+                                        <li><a href="#">Cardamom</a></li>
+                                        <li><a href="#">Cumin</a></li>
+                                        <li><a href="#">Ginger</a></li>
+                                        <li><a href="#">Garlic</a></li>
+                                    </ul>
+                                </fieldset>
+                            </div>
+                        </div>
+
+                        <div class="delivery-locations-container popup-container">
+                            <a href="javascript:void(0);" class="close-popup">X</a>
+                            <div class="popup-content scrollable">
+                                Baily Road,<br />
+                                Shiddeshwari,<br />
+                                Shantinagar
+                            </div>
+                        </div>
+
+                        <div class="content-area">
+                            <?php $is_homepage = Mage::getBlockSingleton('page/html_header')->getIsHomePage(); ?>
+                            <?php if ($is_homepage) { ?>
+                                <!--                                
+                                <div class="banners cycle-slideshow pc">
+                                <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('home_slider')->toHtml(); ?>
+                                 prev/next links 
+                                <div class="cycle-prev">&lsaquo;</div>
+                                <div class="cycle-next">&rsaquo;</div>
+
+                                <div class="cycle-pager"></div>
+                            </div>
+                                -->
+                            <?php } ?>
+                            <?php echo $this->getChildHtml('global_messages') ?>
+                            <?php echo $this->getChildHtml('content') ?>
+
+                        </div>
+
+                        <div class="quick-cart-container">
+                            <a class="close-popup" href="javascript:void(0);">X</a>
+                            <fieldset>
+                                <legend>Quick Cart</legend>
+                                <div class="products-table scrollable">
+
+                                    <!-- START: REPEATING CONTENT -->
+                                    <div class="product-row" data-draft-repeat="8">
+                                        <div class="quantity product-cell">
+                                            <a href="javascript:void(0);" class="increase-quantity"></a>
+                                            <span class="product-quantity">2</span>
+                                            <a href="javascript:void(0);" class="decrease-quantity"></a>
+                                        </div>
+                                        <div class="image product-cell">
+                                            <img data-draft-image="25/42" alt="" />
+                                        </div>
+                                        <div class="title product-cell">
+                                            <span>Name of the product</span>
+                                            <a href="#" class="remove-from-cart">Remove</a>
+                                        </div>
+                                        <div class="price product-cell"><span class="product-price">575</span> TK</div>
+                                    </div>
+                                    <!-- END: REPEATING CONTENT -->
+
+                                </div>
+                                <div class="grand-total">
+                                    <div class="total-products">
+                                        Products: <span>15</span> Pcs
+                                    </div>
+                                    <div class="total-amount">
+                                        Total: <span>1085</span> TK
+                                    </div>
+                                    <div class="clear"></div>
+                                </div>
+
+                                <a href="#" class="button btnConfirm">Confirm</a>
+                                <div class="clear"></div>
+
+                                <div class="note">
+                                    Orders Before <span class="time">3 PM</span> Will Be Delivered On The Same Day
+                                </div>
+                            </fieldset>
+                        </div>
+
+                        <div class="clear"></div>
+                    </div>
+                </div>
+            </section>
+
+            <?php echo $this->getChildHtml('footer') ?>
+            <?php echo $this->getChildHtml('global_cookie_notice') ?>
+            <?php echo $this->getChildHtml('before_body_end') ?>
+        </div>
+
+        <script src="<?php echo $this->helper('core/js')->getJsUrl('webonik/plugins/jquery.mCustomScrollbar.min.js') ?>"></script>
+        <script src="<?php echo $this->helper('core/js')->getJsUrl('webonik/plugins/jquery.cycle2.min.js') ?>"></script>
+        <script src="<?php echo $this->helper('core/js')->getJsUrl('webonik/plugins/plugins.js') ?>"></script>
+        <script src="<?php echo $this->helper('core/js')->getJsUrl('webonik/script.js') ?>"></script>
+
+        <?php echo $this->getAbsoluteFooter() ?>
+    </body>
+</html>
