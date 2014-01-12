@@ -2,20 +2,24 @@
     <nav>
         <div class="center">
             <ul>
-                <li><a href="index.html" class="home"><span></span>Home</a></li>
-                <li><a href="#" class="account"><span></span>My Account</a></li>
-                <li><a href="#" class="cart"><span></span>Shopping Cart</a></li>
-                <li><a href="#" class="checkout"><span></span>Checkout</a></li>
+                <li><a href="<?php echo $this->getUrl('') ?>" class="home"><span></span>Home</a></li>
+                <li><a href="<?php echo $this->getUrl('customer/account')?>" class="account"><span></span>My Account</a></li>
+                <li><a href="<?php echo $this->getUrl('checkout/cart')?>" class="cart"><span></span>Shopping Cart</a></li>
+                <li><a href="<?php echo $this->helper('checkout/url')->getCheckoutUrl(); ?>" class="checkout"><span></span>Checkout</a></li>
             </ul>
+            
             <ul class="pc-inline float-right">
                 <li class="search-container">
-                    <form class="search-form">
-                        <input type="text" placeholder="Search product here..." />
-                        <button type="submit" class="btnSearch">Search</button>
-                    </form>
+                    <?php echo $this->getChildHtml('topSearch') ?>
                 </li>
-                <li><a href="#" class="login"><span></span>Log In</a></li>
-                <li><a href="#" class="register">Register</a></li>
+                <?php 
+                if($this->helper('customer')->isLoggedIn()){
+                ?>
+                <li><a href="<?php echo $this->helper('customer')->getLogoutUrl() ?>" class="logout">Logout</a></li>
+                <?php }else{ ?>
+                <li><a href="<?php echo $this->helper('customer')->getLoginUrl() ?>" class="login"><span></span>Log In</a></li>
+                <li><a href="<?php echo $this->helper('customer')->getRegisterUrl() ?>" class="register">Register</a></li>
+                <?php } ?>
             </ul>
             <ul class="mobile-inline float-right">
                 <li><a href="#" class="login"><span></span>Log In</a></li>
@@ -25,7 +29,7 @@
     </nav>
     <div class="header-content">
         <div class="center">
-            <a href="index.html" class="logo"></a>
+            <a href="<?php echo $this->getUrl('') ?>" class="logo"></a>
             <form class="search-form mobile-inline float-right">
                 <input type="text" placeholder="Search product here..." />
                 <button type="submit" class="btnSearch">Search</button>

@@ -1,0 +1,25 @@
+<?php if (count($this->getItemCollection()->getItems())): ?>
+    <div class="box-collateral box-up-sell">
+
+        <?php // $this->setColumnCount(5); // uncomment this line if you want to have another number of columns. also can be changed in layout ?>
+        <?php $this->resetItemsIterator() ?>
+
+        <?php for ($_j = 0; $_j < $this->getColumnCount(); $_j++): ?>
+            <?php if ($_link = $this->getIterableItem()): ?>
+                <div class="product">
+                    <div class="product-image-container">
+                        <a href="<?php echo $_link->getProductUrl() ?>" title="View product detail">
+                            <img src="<?php echo $this->helper('catalog/image')->init($_link, 'small_image')->resize(166, 183) ?>" alt="<?php echo $this->escapeHtml($_link->getName()) ?>" />
+                            <span><?php echo $this->escapeHtml($_link->getName()) ?></span>
+                        </a>
+                    </div>
+                </div>
+
+            <?php endif; ?>
+        <?php endfor; ?>
+
+        <script type="text/javascript">decorateTable('upsell-product-table')</script>
+    </div>
+    <?php
+
+ endif ?>
